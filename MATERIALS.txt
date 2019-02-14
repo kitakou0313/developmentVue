@@ -1,0 +1,12 @@
+Learning materials:
+- vue video tutorial: https://laracasts.com/series/learn-vue-2-step-by-step (used it myself; very good for learning basics)
+- Vue.js guide: https://vuejs.org/v2/guide/
+//- vue-router guide: https://router.vuejs.org/guide/
+//- axios: https://github.com/axios/axios/ (HTTP client)
+
+Additional:
+- Boostrap-Vue - component pack used for affiliates control panel: https://bootstrap-vue.js.org/
+
+More advanced, not that important at the beginning:
+- tool for transforming multiple files Vue project into single JS file: https://webpack.js.org/
+- tool for transcompiling newest JS to code that can be run in browser: https://babeljs.io/

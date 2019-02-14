@@ -1,0 +1,14 @@
+0.a. Install Node.js (you can read about it here: https://prog-8.com/docs/npm-package)
+0.b. Read README.md to set up project - at the moment only first two(three) steps are important.
+
+* You don't have to worry about router for now. Please do everything in one Users view, adding components when necessary.
+
+1. Modify a view UserDetails component to display information about one user. Decide yourself what information needs to be displayed. "How" visually it is displayed is of less importance for now.
+It is enough to modify only \src\component\UserDetails.vue file. (you may more if you think it's necessary)
+
+2. Display a list of users. Show only basic information like username or email in a table.
+It is enough to modify only \src\view\Users.vue file. (you may more if you think it's necessary)
+
+3. Add form for adding users to the list. Does not need to support all the information from example users. Only what you've displayed in step 1. Have "cancel" or "clear" button to clear the form, and "save" to add user to the list. Add "delete" button to each user in the list to remove them.
+
+4. Add "edit" button to each user in the list to edit them in the form from previous step.
