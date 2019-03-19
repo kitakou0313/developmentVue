@@ -1,6 +1,12 @@
 <template>
-  <div>
-    User component
+  <div class='user-details'>
+    <h3>User component</h3>
+    <p>id:{{user.id}}</p>
+    <p>Name:{{user.name}}</p>
+    <p>Username:{{user.username}}</p>
+    <p>website:{{user.website}}</p>
+
+
   </div>
 </template>
 
