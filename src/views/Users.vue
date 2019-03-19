@@ -3,7 +3,9 @@
     <h2>User's details</h2>
     <UserDetails/>
     <!-- here will be user list -->
+    
     <h2>Here is User list</h2>
+    <transition-group name="fade">
     <div v-for="(user, index) in users" :key="user.id">
       <div class="userIntro">
         <p>userid : {{user.id}} </p>
@@ -14,9 +16,10 @@
       <button type="button" v-on:click="delUser(index);">Delete</button>
       <button type="button" v-on:click="flg = false;editIndex=index">Edit</button>
     </div>
-
+    </transition-group>
     
-    <div class="addUser-form" v-if="flg">
+    <transition name="fade">
+    <div class="addUser-form" v-if="flg" key=1>
       <h3>Add User</h3>
       <input placeholder="Your Name" v-model="newName" type="text">
       <input placeholder="Your UserName" v-model="newUserName" type="text">
@@ -26,8 +29,8 @@
 
       <button type="button" v-on:click="clearForm">clear</button>
     </div>
-
-    <div class="editUser-form" v-else>
+    
+    <div class="editUser-form" v-else key=2>
       <h3>Edit UserID:{{users[editIndex].id}}</h3>
       <input :placeholder=users[editIndex].name v-model="newName" type="text">
       <input :placeholder=users[editIndex].username v-model="newUserName" type="text">
@@ -37,7 +40,7 @@
       <button type="button" v-on:click="clearForm">clear</button>
       <button type="button" v-on:click="flg = true">calcel</button>
     </div>
-
+    </transition>
 
   </div>
 
@@ -102,4 +105,14 @@ export default {
   }
 }
 </script>
+
+<style>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+</style>
+
 
