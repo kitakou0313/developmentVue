@@ -13,12 +13,12 @@
         <p>UserName : {{user.username}}</p>
         <p>Email : {{user.email}}</p>
       </div>
-      <button type="button" v-on:click="delUser(index);">Delete</button>
-      <button type="button" v-on:click="flg = false;editIndex=index">Edit</button>
+      <button type="button" v-on:click="flg = true; delUser(index);">Delete</button>
+      <button type="button" v-on:click="flg = false; editIndex=index">Edit</button>
     </div>
     </transition-group>
     
-    <transition name="fade">
+    
     <div class="addUser-form" v-if="flg" key=1>
       <h3>Add User</h3>
       <input placeholder="Your Name" v-model="newName" type="text">
@@ -40,8 +40,7 @@
       <button type="button" v-on:click="clearForm">clear</button>
       <button type="button" v-on:click="flg = true">calcel</button>
     </div>
-    </transition>
-
+    
   </div>
 
 </template>
@@ -71,11 +70,13 @@ export default {
     delUser:function(ind){
       this.users.splice(ind,1);
     },
+
     clearForm:function(){
       this.newName="";
       this.newUserName=""; 
       this.newEmail="";
     },
+
     addUser:function(){
       this.users.push(
         {
@@ -99,6 +100,7 @@ export default {
       });
       this.flg = true;
       this.editIndex = null;
+
       this.clearForm();
     },
     
