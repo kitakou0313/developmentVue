@@ -12,8 +12,8 @@
           <p>UserName : {{user.username}}</p>
           <p>Email : {{user.email}}</p>
         </div>
-        <button type="button" v-on:click="delUser(index);">Delete</button>
-        <button type="button" v-on:click="flg = false; editUserData={...user}">Edit</button>
+        <button type="button" v-on:click="delUser(user.id);">Delete</button>
+        <button type="button" v-on:click="editUserData={...user}">Edit</button>
       </div>
     </transition-group>
 
@@ -24,8 +24,9 @@
 <script>
 import UserDetails from "@/components/UserDetails";
 import Userform from "@/components/userform";
-
 import UserList from "@/assets/user-list.js";
+
+import api from "@/api";
 
 export default {
   name: "users",
@@ -35,7 +36,7 @@ export default {
   },
   data() {
     return {
-      users: UserList,
+      users: [],
       UsedId: UserList.length + 1,
       editUserData: {
         id: null,
@@ -46,21 +47,41 @@ export default {
     };
   },
 
+  async created() {
+    try {
+      const response = await api.get("/users");
+      this.users = response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   computed: {
     isAdd() {
       return this.editUserData.id == null;
     }
   },
   methods: {
-    delUser: function(ind) {
-      this.users.splice(ind, 1);
+    delUser: function(deletedUserId) {
+      //this.users.splice(ind, 1);
+      api
+        .delete(`/users/${deletedUserId}`)
+        .then(response => {
+          console.log(response);
+          this.users.splice(
+            this.users.findIndex(user => {
+              return user.id == deletedUserId;
+            }),
+            1
+          );
+        })
+        .catch(error => {
+          console.log(error);
+        });
     },
+
     addUser: function(newUser) {
-      this.users.push({
-        ...newUser,
-        id: this.UsedId
-      });
-      this.UsedId++;
+      this.users.push(newUser);
     },
 
     editUser: function(editedUser) {

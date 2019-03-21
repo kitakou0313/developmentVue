@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import api from "@/api"
+
 export default {
   props: ["user"],
   data() {
@@ -52,13 +54,28 @@ export default {
     },
 
     addUser: function() {
-      this.$emit("add",this.editUserData)
+      api.post("/users",this.editUserData)
+        .then((response)=> {
+          console.log(response);
+          this.$emit("add",response.data);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+      
       this.clearForm(false);
     },
 
-    editUser: function() {
-      this.$emit("edit",this.editUserData);
-      this.clearForm(false);
+    async editUser() {
+      try{
+        console.log(this.editUserData);
+        const response = await api.put(`/users/${this.editUserData.id}`,this.editUserData);
+        this.$emit("edit", response.data);
+        this.clearForm(false);
+
+      }catch(error){
+        console.log(error);
+      }
     }
   }
 };
