@@ -68,11 +68,9 @@ export default {
 
     async editUser() {
       try{
-        console.log(this.editUserData);
         const response = await api.put(`/users/${this.editUserData.id}`,this.editUserData);
         this.$emit("edit", response.data);
         this.clearForm(false);
-
       }catch(error){
         console.log(error);
       }

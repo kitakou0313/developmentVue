@@ -5,7 +5,7 @@
     <!-- here will be user list -->
     <h2>Here is User list</h2>
     <transition-group name="fade">
-      <div v-for="(user, index) in users" :key="user.id">
+      <div v-for="(user) in users" :key="user.id">
         <div class="userIntro">
           <p>userid : {{user.id}}</p>
           <p>Name : {{user.name}}</p>
