@@ -1,16 +1,18 @@
 <template>
   <div class="user">
     <h2>User's details</h2>
-    <UserDetails/>
+    <router-view/>
     <!-- here will be user list -->
     <h2>Here is User list</h2>
     <transition-group name="fade">
       <div v-for="(user) in users" :key="user.id">
         <div class="userIntro">
-          <p>userid : {{user.id}}</p>
+          <router-link :to="{name:'userDetail', params:{id:user.id}}">userid : {{user.id}}</router-link>
           <p>Name : {{user.name}}</p>
           <p>UserName : {{user.username}}</p>
           <p>Email : {{user.email}}</p>
+
+          <p>{{user.showNameAndEmail()}}</p>
         </div>
         <button type="button" v-on:click="delUser(user.id);">Delete</button>
         <button type="button" v-on:click="editUserData={...user}">Edit</button>
@@ -22,16 +24,16 @@
 </template>
 
 <script>
-import UserDetails from "@/components/UserDetails";
 import Userform from "@/components/userform";
 import UserList from "@/assets/user-list.js";
+
+import userClass from "@/classes/userclass.js"
 
 import api from "@/api";
 
 export default {
   name: "users",
   components: {
-    UserDetails,
     Userform
   },
   data() {
@@ -47,10 +49,12 @@ export default {
     };
   },
 
+
+
   async created() {
     try {
       const response = await api.get("/users");
-      this.users = response.data;
+      this.users = response.data.map((userData) => new userClass(userData));
     } catch (error) {
       console.log(error);
     }
