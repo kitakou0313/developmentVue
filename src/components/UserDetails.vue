@@ -1,12 +1,21 @@
 <template>
   <div class="user-details">
-    <h3>User component</h3>
-    <p>id:{{user.id}}</p>
-    <p>Name:{{user.name}}</p>
-    <p>Username:{{user.username}}</p>
-    <p>UserEmail:{{user.email}}</p>
+    <b-card header-text-variant="white" header-bg-variant="dark">
+      <template slot="header">Details about {{user.name}}</template>
 
-    
+      <b-list-group>
+        <b-list-group-item>id:{{user.id}}</b-list-group-item>
+        <b-list-group-item>Name:{{user.name}}</b-list-group-item>
+        <b-list-group-item>Username:{{user.username}}</b-list-group-item>
+        <b-list-group-item>UserEmail:{{user.email}}</b-list-group-item>
+      </b-list-group>
+
+      <template slot="footer">
+        <router-link :to="{name:'users'}">
+          <b-btn-close></b-btn-close>
+        </router-link>
+      </template>
+    </b-card>
   </div>
 </template>
 
@@ -34,20 +43,19 @@ export default {
 
   watch: {
     id(newValue) {
-     this.changeUserData(newValue);
+      this.changeUserData(newValue);
     }
   },
 
   methods: {
-    async changeUserData(userid){
-      try{
+    async changeUserData(userid) {
+      try {
         const response = await api.get(`/users/${userid}`);
         this.user = response.data;
-      } catch (error){
+      } catch (error) {
         console.log(error);
       }
     }
   }
-
 };
 </script>

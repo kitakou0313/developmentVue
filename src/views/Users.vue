@@ -1,33 +1,39 @@
 <template>
-  <div class="user">
-    <h2>User's details</h2>
+  <b-container>
     <router-view/>
     <!-- here will be user list -->
     <h2>Here is User list</h2>
-    <transition-group name="fade">
-      <div v-for="(user) in users" :key="user.id">
-        <div class="userIntro">
-          <router-link :to="{name:'userDetail', params:{id:user.id}}">userid : {{user.id}}</router-link>
-          <p>Name : {{user.name}}</p>
-          <p>UserName : {{user.username}}</p>
-          <p>Email : {{user.email}}</p>
+    <b-button v-b-modal.Userform>Add User</b-button>
+    <b-row>
+      <b-col>
+        <b-table striped hover :items="users" :fields="fields">
+          <template v-slot:name="cell">
+            <router-link :to="{name:'userDetail',params:{id:cell.item.id}}">{{cell.value}}</router-link>
+            {{cell.unformatted}}
+          </template>
 
-          <p>{{user.showNameAndEmail()}}</p>
-        </div>
-        <button type="button" v-on:click="delUser(user.id);">Delete</button>
-        <button type="button" v-on:click="editUserData={...user}">Edit</button>
-      </div>
-    </transition-group>
+          <template v-slot:action="cell">
+            <b-btn-group>
+              <b-button v-on:click="delUser(cell.item.id);">Delete</b-button>
+              <b-button v-b-modal.Userform v-on:click="editUserData={...cell.item}">Edit</b-button>
+            </b-btn-group>
+          </template>
+        </b-table>
+      </b-col>
+    </b-row>
 
-    <Userform :user="editUserData" v-on:add="addUser" v-on:edit="editUser"></Userform>
-  </div>
+    <b-modal id="Userform" title="Edit User">
+      <Userform :user="editUserData" v-on:add="addUser" v-on:edit="editUser"></Userform>
+    </b-modal>
+
+  </b-container>
 </template>
 
 <script>
 import Userform from "@/components/userform";
 import UserList from "@/assets/user-list.js";
 
-import userClass from "@/classes/userclass.js"
+import userClass from "@/classes/userclass.js";
 
 import api from "@/api";
 
@@ -38,6 +44,25 @@ export default {
   },
   data() {
     return {
+      fields: [
+        {
+          key: "id",
+          sortable: true
+        },
+        {
+          key: "name",
+          sortable: true,
+          formatter: (val, key, item) => {
+            return item.showNameAndEmail();
+          }
+        },
+        {
+          key: "username",
+          sortable: true
+        },
+        "email",
+        "action"
+      ],
       users: [],
       UsedId: UserList.length + 1,
       editUserData: {
@@ -49,12 +74,10 @@ export default {
     };
   },
 
-
-
   async created() {
     try {
       const response = await api.get("/users");
-      this.users = response.data.map((userData) => new userClass(userData));
+      this.users = response.data.map(userData => new userClass(userData));
     } catch (error) {
       console.log(error);
     }
@@ -85,7 +108,7 @@ export default {
     },
 
     addUser: function(newUser) {
-      this.users.push(newUser);
+      this.users.push(new userClass(newUser));
     },
 
     editUser: function(editedUser) {
@@ -94,7 +117,7 @@ export default {
           return user.id == editedUser.id;
         }),
         1,
-        editedUser
+        new userClass(editedUser)
       );
     }
   }
